@@ -15,6 +15,10 @@ pub(crate) fn extract_operator(s: &str) -> (&str, &str){
     (&s[1..], &s[0..1])
 }
 
+pub(crate) fn _extract_ident(s: &str) -> (&str, &str){
+    take_while(|c| c.is_ascii_alphabetic(), s)
+}
+
 
 
 pub(crate) fn take_while(accept:impl Fn(char) -> bool, s:&str) -> (&str, &str){
