@@ -28,13 +28,13 @@ pub(crate) fn extract_operator(s: &str) -> (&str, &str){
 }
 
 pub(crate) fn extract_ident(s: &str) -> (&str, &str){
-    let starts_with_alphanum = s
+    let starts_with_alphabetic = s
     .chars()
     .next()
-    .map(|c| c.is_ascii_alphanumeric())
+    .map(|c| c.is_ascii_alphabetic())
     .unwrap_or_else(|| false);
 
-    if starts_with_alphanum {
+    if starts_with_alphabetic {
         take_while(|c| c.is_ascii_alphanumeric(), s)
     } else {
         (s, "")
