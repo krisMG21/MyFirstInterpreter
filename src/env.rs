@@ -7,7 +7,7 @@ pub(crate) struct Env{
 }
 
 impl Env{
-    pub(crate) fn store_bindings(&mut self, name:String, value:Val){
+    pub(crate) fn store_binding(&mut self, name:String, value:Val){
         self.bindings.insert(name,value);
     }
 }

@@ -1,17 +1,18 @@
 use crate::expr::Expr;
 use crate::utils;
+use crate::env::Env;
 
 #[derive(Debug, PartialEq)]
-pub struct BindingRef{
+pub struct BindingDef{
     name: String,
-    value: Expr,
+    val: Expr,
 }
 
-impl BindingRef{
-    pub fn new(s: &str) -> (&str, Self){
+impl BindingDef{
+    pub(crate) fn new(s: &str) -> (&str, Self){
         let s = utils::tag("let", s);
 
-        let (s, _) = utils::extract_whitespace(s);
+        let (s,  _) = utils::extract_whitespace(s);
         let (s, name) = utils::extract_ident(s);
         let (s, _) = utils::extract_whitespace(s);
         
@@ -24,9 +25,13 @@ impl BindingRef{
             s,
             Self{
                 name : name.to_string(),
-                value : val
+                val
             }
         )
+    }
+
+    pub(crate) fn eval(&self, env: &mut Env){
+        env.store_binding(self.name.clone(), self.val.eval());
     }
 }
 
@@ -39,16 +44,18 @@ mod test{
     #[test]
     fn parse_binding_def(){
         assert_eq!(
-            BindingRef::new("let a = 1/2"),
+            BindingDef::new("let a = 1/2"),
             (
                 "",
-                BindingRef{
+                BindingDef{
                     name : "a".to_string(),
-                    value : {
+                    val : {
                         Expr { lhs: Number(1), rhs: Number(2), op: Op::Div}
                     }
                 }
             )
         );
     }
+
+    
 }
