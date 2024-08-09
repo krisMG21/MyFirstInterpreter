@@ -42,18 +42,20 @@ mod test{
     use crate::expr::{Number, Op};
 
     #[test]
-    fn parse_binding_def(){
+    fn parse_binding_def() {
         assert_eq!(
-            BindingDef::new("let a = 1/2"),
-            (
+            BindingDef::new("let a = 10 / 2"),
+            Ok((
                 "",
-                BindingDef{
-                    name : "a".to_string(),
-                    val : {
-                        Expr { lhs: Number(1), rhs: Number(2), op: Op::Div}
-                    }
-                }
-            )
+                BindingDef {
+                    name: "a".to_string(),
+                    val: Expr::Operation {
+                        lhs: Number(10),
+                        rhs: Number(2),
+                        op: Op::Div,
+                    },
+                },
+            )),
         );
     }
 

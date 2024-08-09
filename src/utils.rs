@@ -18,13 +18,13 @@ pub(crate) fn extract_digits(s: &str) -> (&str, &str){
     take_while(|c| c.is_ascii_digit(), s)
 }
 
-pub(crate) fn extract_operator(s: &str) -> (&str, &str){
+pub(crate) fn extract_operator(s: &str) -> Result<(&str, &str), String>{
     match &s[0..1]{
         "+" | "-" | "*" | "/" => {}
         _ => panic!("Bad operator!")
     }
 
-    (&s[1..], &s[0..1])
+    Ok((&s[1..], &s[0..1]))
 }
 
 pub(crate) fn extract_ident(s: &str) -> (&str, &str){
@@ -41,11 +41,11 @@ pub(crate) fn extract_ident(s: &str) -> (&str, &str){
     }    
 }
 
-pub(crate) fn tag<'a, 'b>(starting_text: &'a str, s: &'b str) -> &'b str{
+pub(crate) fn tag<'a, 'b>(starting_text: &'a str, s: &'b str) -> Result<&'b str, String>{
     if s.starts_with(starting_text){
-        &s[starting_text.len()..]
+        Ok(&s[starting_text.len()..])
     } else {
-        panic!("expected {}", starting_text)
+        Err(format!("expected {}", starting_text))
     }
 }
 
@@ -91,7 +91,7 @@ mod tests{
     }
 
     #[test]
-    fn tag_word(){
-        assert_eq!(tag("let", "let a"), " a")
+    fn tag_word() {
+        assert_eq!(tag("let", "let a"), Ok(" a"));
     }
 }
